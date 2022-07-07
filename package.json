@@ -2,8 +2,6 @@
   "name": "y-websocket",
   "version": "1.4.3",
   "description": "Websockets provider for Yjs",
-  "main": "./dist/y-websocket.cjs",
-  "module": "./src/y-websocket.js",
   "sideEffects": false,
   "funding": {
     "type": "GitHub Sponsors ❤",
@@ -25,24 +23,31 @@
     "bin/*",
     "src/*"
   ],
+  "type": "module",
   "exports": {
     "./package.json": "./package.json",
-    "./server/utils":  {
-      "import": "./src/server/utils.js",
-      "require": "./dist/server/utils.cjs",
-      "types": "./dist/server/utils.d.ts"
-    },
-    "./server/callback":  {
-      "import": "./src/server/callback.js",
-      "require": "./dist/server/callback.cjs",
-      "types": "./dist/server/callback.d.ts"
-    },
     ".": {
       "import": "./src/y-websocket.js",
-      "require": "./dist/y-websocket.cjs",
-      "types": "./dist/y-websocket.d.ts"
+      "default": "./dist/y-websocket.cjs"
+    },
+    "./server/*": {
+      "import": "./src/server/*.js",
+      "default": "./dist/server/*.cjs"
+    },
+    "./bin/*": {
+      "import": "./src/bin/*.js",
+      "default": "./dist/bin/*.cjs"
     }
   },
+  "typesVersions": {
+    "*": {
+      "*": ["./dist/*.d.ts"],
+      "bin/*": ["./dist/server/*.d.ts"]
+    }
+  },
+  "types": "./dist/y-websocket.d.ts",
+  "main": "./dist/y-websocket.cjs",
+  "module": "./src/y-websocket.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yjs/y-websocket.git"
