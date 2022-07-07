@@ -12,8 +12,6 @@ export const isCallbackSet = !!CALLBACK_URL
  * @param {import('./utils.js').WSSharedDoc} doc
  */
 export const callbackHandler = (update, origin, doc) => {
-  if (CALLBACK_URL == null) return
-
   const room = doc.name
   const dataToSend = {
     room: room,
@@ -27,6 +25,7 @@ export const callbackHandler = (update, origin, doc) => {
       content: getContent(sharedObjectName, sharedObjectType, doc).toJSON()
     }
   })
+  // @ts-ignore
   callbackRequest(CALLBACK_URL, CALLBACK_TIMEOUT, dataToSend)
 }
 
@@ -68,18 +67,12 @@ const callbackRequest = (url, timeout, data) => {
  */
 const getContent = (objName, objType, doc) => {
   switch (objType) {
-    case 'Array':
-      return doc.getArray(objName)
-    case 'Map':
-      return doc.getMap(objName)
-    case 'Text':
-      return doc.getText(objName)
-    case 'XmlFragment':
-      return doc.getXmlFragment(objName)
+    case 'Array': return doc.getArray(objName)
+    case 'Map': return doc.getMap(objName)
+    case 'Text': return doc.getText(objName)
+    case 'XmlFragment': return doc.getXmlFragment(objName)
     // The function getXmlElement does not exists in the Y.Doc docs.
-    // case 'XmlElement':
-    //   return doc.getXmlElement(objName)
-    default :
-      return {}
+    // case 'XmlElement': return doc.getXmlElement(objName)
+    default : return {}
   }
 }
