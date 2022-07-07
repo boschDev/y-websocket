@@ -24,7 +24,7 @@ This repository implements a basic server that you can adopt to your specific us
 Start a y-websocket server:
 
 ```sh
-HOST=localhost PORT=1234 npx y-websocket
+HOST=localhost PORT=1234 npx y-websocket-server
 ```
 
 ### Client Code:
@@ -109,10 +109,10 @@ wsOpts = {
 Start a y-websocket server:
 
 ```sh
-HOST=localhost PORT=1234 npx y-websocket
+HOST=localhost PORT=1234 npx y-websocket-server
 ```
 
-Since npm symlinks the `y-websocket` executable from your local `./node_modules/.bin` folder, you can simply run npx. The `PORT` environment variable already defaults to 1234, and `HOST` defaults to `localhost`.
+Since npm symlinks the `y-websocket-server` executable from your local `./node_modules/.bin` folder, you can simply run npx. The `PORT` environment variable already defaults to 1234, and `HOST` defaults to `localhost`.
 
 ### Websocket Server with Persistence
 
