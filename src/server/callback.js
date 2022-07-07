@@ -1,17 +1,19 @@
-const http = require('http')
+import * as http from 'http'
 
 const CALLBACK_URL = process.env.CALLBACK_URL ? new URL(process.env.CALLBACK_URL) : null
-const CALLBACK_TIMEOUT = process.env.CALLBACK_TIMEOUT || 5000
+const CALLBACK_TIMEOUT = Number(process.env.CALLBACK_TIMEOUT || 5000)
 const CALLBACK_OBJECTS = process.env.CALLBACK_OBJECTS ? JSON.parse(process.env.CALLBACK_OBJECTS) : {}
 
-exports.isCallbackSet = !!CALLBACK_URL
+export const isCallbackSet = !!CALLBACK_URL
 
 /**
  * @param {Uint8Array} update
  * @param {any} origin
- * @param {WSSharedDoc} doc
+ * @param {import('./utils.js').WSSharedDoc} doc
  */
-exports.callbackHandler = (update, origin, doc) => {
+export const callbackHandler = (update, origin, doc) => {
+  if (CALLBACK_URL == null) return
+
   const room = doc.name
   const dataToSend = {
     room: room,
@@ -62,15 +64,22 @@ const callbackRequest = (url, timeout, data) => {
 /**
  * @param {string} objName
  * @param {string} objType
- * @param {WSSharedDoc} doc
+ * @param {import('./utils.js').WSSharedDoc} doc
  */
 const getContent = (objName, objType, doc) => {
   switch (objType) {
-    case 'Array': return doc.getArray(objName)
-    case 'Map': return doc.getMap(objName)
-    case 'Text': return doc.getText(objName)
-    case 'XmlFragment': return doc.getXmlFragment(objName)
-    case 'XmlElement': return doc.getXmlElement(objName)
-    default : return {}
+    case 'Array':
+      return doc.getArray(objName)
+    case 'Map':
+      return doc.getMap(objName)
+    case 'Text':
+      return doc.getText(objName)
+    case 'XmlFragment':
+      return doc.getXmlFragment(objName)
+    // The function getXmlElement does not exists in the Y.Doc docs.
+    // case 'XmlElement':
+    //   return doc.getXmlElement(objName)
+    default :
+      return {}
   }
 }

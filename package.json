@@ -4,7 +4,6 @@
   "description": "Websockets provider for Yjs",
   "main": "./dist/y-websocket.cjs",
   "module": "./src/y-websocket.js",
-  "types": "./dist/src/y-websocket.d.ts",
   "sideEffects": false,
   "funding": {
     "type": "GitHub Sponsors ❤",
@@ -28,8 +27,14 @@
   ],
   "exports": {
     "./package.json": "./package.json",
-    "./bin/utils": "./bin/utils.js",
-    "./bin/callback": "./bin/callback.js",
+    "./server/utils":  {
+      "import": "./src/server/utils.js",
+      "require": "./bin/utils.js"
+    },
+    "./server/callback":  {
+      "import": "./src/server/callback.js",
+      "require": "./bin/callback.js"
+    },
     ".": {
       "import": "./src/y-websocket.js",
       "require": "./dist/y-websocket.cjs"
@@ -51,7 +56,9 @@
   "standard": {
     "ignore": [
       "/dist",
-      "/node_modules"
+      "/node_modules",
+      "/bin/utils.js",
+      "/bin/callback.js"
     ]
   },
   "dependencies": {

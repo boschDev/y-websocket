@@ -6,7 +6,7 @@
 const WebSocket = require('ws')
 const http = require('http')
 const wss = new WebSocket.Server({ noServer: true })
-const setupWSConnection = require('./utils.js').setupWSConnection
+const { setupWSConnection } = require('../dist/server/utils.js')
 
 const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || 1234

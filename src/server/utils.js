@@ -1,19 +1,15 @@
-const Y = require('yjs')
-const syncProtocol = require('y-protocols/dist/sync.cjs')
-const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
+import * as Y from 'yjs'
+import * as syncProtocol from 'y-protocols/sync'
+import * as awarenessProtocol from 'y-protocols/awareness'
+import * as encoding from 'lib0/encoding'
+import * as decoding from 'lib0/decoding'
+import * as mutex from 'lib0/mutex'
+import * as map from 'lib0/map'
+import debounce from 'lodash.debounce'
+import { callbackHandler, isCallbackSet } from './callback.js'
 
-const encoding = require('lib0/dist/encoding.cjs')
-const decoding = require('lib0/dist/decoding.cjs')
-const mutex = require('lib0/dist/mutex.cjs')
-const map = require('lib0/dist/map.cjs')
-
-const debounce = require('lodash.debounce')
-
-const callbackHandler = require('./callback.js').callbackHandler
-const isCallbackSet = require('./callback.js').isCallbackSet
-
-const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000
-const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000
+const CALLBACK_DEBOUNCE_WAIT = Number(process.env.CALLBACK_DEBOUNCE_WAIT || 2000)
+const CALLBACK_DEBOUNCE_MAXWAIT = Number(process.env.CALLBACK_DEBOUNCE_MAXWAIT || 10000)
 
 const wsReadyStateConnecting = 0
 const wsReadyStateOpen = 1
@@ -30,7 +26,7 @@ let persistence = null
 if (typeof persistenceDir === 'string') {
   console.info('Persisting documents to "' + persistenceDir + '"')
   // @ts-ignore
-  const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
+  const { LeveldbPersistence } = require('y-leveldb')
   const ldb = new LeveldbPersistence(persistenceDir)
   persistence = {
     provider: ldb,
@@ -51,22 +47,20 @@ if (typeof persistenceDir === 'string') {
  * @param {{bindState: function(string,WSSharedDoc):void,
  * writeState:function(string,WSSharedDoc):Promise<any>,provider:any}|null} persistence_
  */
-exports.setPersistence = persistence_ => {
+export const setPersistence = persistence_ => {
   persistence = persistence_
 }
 
 /**
  * @return {null|{bindState: function(string,WSSharedDoc):void,
-  * writeState:function(string,WSSharedDoc):Promise<any>}|null} used persistence layer
-  */
-exports.getPersistence = () => persistence
+ * writeState:function(string,WSSharedDoc):Promise<any>}|null} used persistence layer
+ */
+export const getPersistence = () => persistence
 
 /**
  * @type {Map<string,WSSharedDoc>}
  */
-const docs = new Map()
-// exporting docs so that others can use it
-exports.docs = docs
+export const docs = new Map()
 
 const messageSync = 0
 const messageAwareness = 1
@@ -85,7 +79,7 @@ const updateHandler = (update, origin, doc) => {
   doc.conns.forEach((_, conn) => send(doc, conn, message))
 }
 
-class WSSharedDoc extends Y.Doc {
+export class WSSharedDoc extends Y.Doc {
   /**
    * @param {string} name
    */
@@ -144,7 +138,7 @@ class WSSharedDoc extends Y.Doc {
  * @param {boolean} gc - whether to allow gc on the doc (applies only when created)
  * @return {WSSharedDoc}
  */
-const getYDoc = (docname, gc = true) => map.setIfUndefined(docs, docname, () => {
+export const getYDoc = (docname, gc = true) => map.setIfUndefined(docs, docname, () => {
   const doc = new WSSharedDoc(docname)
   doc.gc = gc
   if (persistence !== null) {
@@ -153,8 +147,6 @@ const getYDoc = (docname, gc = true) => map.setIfUndefined(docs, docname, () => 
   docs.set(docname, doc)
   return doc
 })
-
-exports.getYDoc = getYDoc
 
 /**
  * @param {any} conn
@@ -232,7 +224,7 @@ const pingTimeout = 30000
  * @param {any} req
  * @param {any} opts
  */
-exports.setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {
+export const setupWSConnection = (conn, req, { docName = req.url.slice(1).split('?')[0], gc = true } = {}) => {
   conn.binaryType = 'arraybuffer'
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docName, gc)
