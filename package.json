@@ -29,15 +29,18 @@
     "./package.json": "./package.json",
     "./server/utils":  {
       "import": "./src/server/utils.js",
-      "require": "./bin/utils.js"
+      "require": "./dist/server/utils.cjs",
+      "types": "./dist/server/utils.d.ts"
     },
     "./server/callback":  {
       "import": "./src/server/callback.js",
-      "require": "./bin/callback.js"
+      "require": "./dist/server/callback.cjs",
+      "types": "./dist/server/callback.d.ts"
     },
     ".": {
       "import": "./src/y-websocket.js",
-      "require": "./dist/y-websocket.cjs"
+      "require": "./dist/y-websocket.cjs",
+      "types": "./dist/y-websocket.d.ts"
     }
   },
   "repository": {

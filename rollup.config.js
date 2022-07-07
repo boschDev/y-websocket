@@ -21,7 +21,7 @@ export default [
     input: './src/server/utils.js',
     external: () => true,
     output: [{
-      file: './dist/server/utils.js',
+      file: './dist/server/utils.cjs',
       format: 'cjs',
       sourcemap: true,
       paths: path => {
@@ -40,7 +40,7 @@ export default [
     input: './src/server/callback.js',
     external: () => true,
     output: [{
-      file: './dist/server/callback.js',
+      file: './dist/server/callback.cjs',
       format: 'cjs',
       sourcemap: true,
       paths: path => {
