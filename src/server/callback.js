@@ -9,7 +9,7 @@ export const isCallbackSet = !!CALLBACK_URL
 /**
  * @param {Uint8Array} update
  * @param {any} origin
- * @param {import('./utils.js').WSSharedDoc} doc
+ * @param {import('./utils').WSSharedDoc} doc
  */
 export const callbackHandler = (update, origin, doc) => {
   const room = doc.name
@@ -63,7 +63,7 @@ const callbackRequest = (url, timeout, data) => {
 /**
  * @param {string} objName
  * @param {string} objType
- * @param {import('./utils.js').WSSharedDoc} doc
+ * @param {import('./utils').WSSharedDoc} doc
  */
 const getContent = (objName, objType, doc) => {
   switch (objType) {

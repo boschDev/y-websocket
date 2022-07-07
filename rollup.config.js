@@ -30,7 +30,7 @@ export default [
         } else if (/^y-protocols\//.test(path)) {
           return `y-protocols/dist${path.slice(11)}.cjs`
         } else if (path === `${__dirname}/src/server/callback.js`) {
-          return './callback.js'
+          return './callback.cjs'
         }
         return path
       }
@@ -49,7 +49,7 @@ export default [
         } else if (/^y-protocols\//.test(path)) {
           return `y-protocols/dist${path.slice(11)}.cjs`
         } else if (path === `${__dirname}/src/server/utils.js`) {
-          return './utils.js'
+          return './utils.cjs'
         }
         return path
       }

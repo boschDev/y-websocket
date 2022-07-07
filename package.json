@@ -23,7 +23,6 @@
     "bin/*",
     "src/*"
   ],
-  "type": "module",
   "exports": {
     "./package.json": "./package.json",
     ".": {
