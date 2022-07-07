@@ -58,7 +58,8 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     // "maxNodeModuleJsDepth": 5
   },
-  "exclude": [
-    "./node_modules"
+  "include": [
+    "./bin",
+    "./src"
   ]
 }
