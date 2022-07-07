@@ -1,4 +1,3 @@
-import { WSSharedDoc } from './utils.js' // eslint-disable-line
 import * as http from 'http'
 import * as Y from 'yjs'
 
