@@ -1,7 +1,9 @@
+import { WSSharedDoc } from './utils.js' // eslint-disable-line
 import * as http from 'http'
+import * as Y from 'yjs'
 
 const CALLBACK_URL = process.env.CALLBACK_URL ? new URL(process.env.CALLBACK_URL) : null
-const CALLBACK_TIMEOUT = Number(process.env.CALLBACK_TIMEOUT || 5000)
+const CALLBACK_TIMEOUT = Number.parseInt(process.env.CALLBACK_TIMEOUT || '5000')
 const CALLBACK_OBJECTS = process.env.CALLBACK_OBJECTS ? JSON.parse(process.env.CALLBACK_OBJECTS) : {}
 
 export const isCallbackSet = !!CALLBACK_URL
@@ -71,8 +73,7 @@ const getContent = (objName, objType, doc) => {
     case 'Map': return doc.getMap(objName)
     case 'Text': return doc.getText(objName)
     case 'XmlFragment': return doc.getXmlFragment(objName)
-    // The function getXmlElement does not exists in the Y.Doc docs.
-    // case 'XmlElement': return doc.getXmlElement(objName)
+    case 'XmlElement': return doc.get(objName, Y.XmlElement)
     default : return {}
   }
 }

@@ -1,22 +1,14 @@
 #!/usr/bin/env node
-
-/**
- * @type {any}
- */
-const WebSocket = require('ws')
-const http = require('http')
-const wss = new WebSocket.Server({ noServer: true })
-const { setupWSConnection, setPersistence } = require('../dist/server/utils.cjs')
-const Y = require('yjs')
-
-const host = process.env.HOST || 'localhost'
-const port = process.env.PORT || 1234
+import { setPersistence, setupWSConnection } from './utils.js'
+import { WebSocketServer } from 'ws'
+import http from 'http'
+import { LeveldbPersistence } from 'y-leveldb'
+import * as Y from 'yjs'
 
 const persistenceDir = process.env.YPERSISTENCE
 if (typeof persistenceDir === 'string') {
   console.info('Persisting documents to "' + persistenceDir + '"')
   // @ts-ignore
-  const { LeveldbPersistence } = require('y-leveldb')
   const ldb = new LeveldbPersistence(persistenceDir)
   setPersistence({
     provider: ldb,
@@ -32,6 +24,11 @@ if (typeof persistenceDir === 'string') {
     writeState: async (docName, ydoc) => {}
   })
 }
+
+const wss = new WebSocketServer({ noServer: true })
+
+const host = process.env.HOST || 'localhost'
+const port = process.env.PORT || 1234
 
 const server = http.createServer((request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/plain' })
@@ -49,7 +46,7 @@ server.on('upgrade', (request, socket, head) => {
   const handleAuth = ws => {
     wss.emit('connection', ws, request)
   }
-  wss.handleUpgrade(request, socket, head, handleAuth)
+  wss.handleUpgrade(request, /** @type {any} */ (socket), head, handleAuth)
 })
 
 server.listen(port, () => {
