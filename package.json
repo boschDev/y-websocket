@@ -37,9 +37,8 @@
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "./dist/src/*.d.ts"
-      ]
+      "bin/*": ["./dist/bin/*.d.ts"],
+      "*": ["./dist/src/*.d.ts"]
     }
   },
   "repository": {
