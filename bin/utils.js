@@ -8,8 +8,8 @@ import * as map from 'lib0/map'
 import debounce from 'lodash.debounce'
 import { callbackHandler, isCallbackSet } from './callback.js'
 
-const CALLBACK_DEBOUNCE_WAIT = Number.parseInt(process.env.CALLBACK_DEBOUNCE_WAIT || '2000')
-const CALLBACK_DEBOUNCE_MAXWAIT = Number.parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT || '10000')
+const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT || '2000')
+const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT || '10000')
 
 const wsReadyStateConnecting = 0
 const wsReadyStateOpen = 1
@@ -167,7 +167,7 @@ const closeConn = (doc, conn) => {
     /**
      * @type {Set<number>}
      */
-      // @ts-ignore
+    // @ts-ignore
     const controlledIds = doc.conns.get(conn)
     doc.conns.delete(conn)
     awarenessProtocol.removeAwarenessStates(doc.awareness, Array.from(controlledIds), null)
