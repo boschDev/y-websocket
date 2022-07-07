@@ -31,15 +31,15 @@
     "./bin/utils": "./bin/utils.js",
     "./bin/callback": "./bin/callback.js",
     ".": {
-      "types": "./dist/src/y-websocket.d.ts",
       "import": "./src/y-websocket.js",
       "require": "./dist/y-websocket.cjs"
     }
   },
   "typesVersions": {
     "*": {
-      "bin/*": ["./dist/bin/*.d.ts"],
-      "*": ["./dist/src/*.d.ts"]
+      ".": ["./dist/src/y-websocket.d.ts"],
+      "./*": ["./dist/src/*.d.ts"],
+      "bin/*": ["./dist/bin/*.d.ts"]
     }
   },
   "repository": {
