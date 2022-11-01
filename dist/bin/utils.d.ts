@@ -17,7 +17,6 @@ export class WSSharedDoc extends Y.Doc {
      */
     constructor(name: string);
     name: string;
-    mux: mutex.mutex;
     /**
      * Maps from conn to set of controlled user ids. Delete all user ids from awareness when this conn is closed
      * @type {Map<Object, Set<number>>}
@@ -31,5 +30,4 @@ export class WSSharedDoc extends Y.Doc {
 export function getYDoc(docname: string, gc?: boolean): WSSharedDoc;
 export function setupWSConnection(conn: any, req: any, { docName, gc }?: any): void;
 import * as Y from "yjs";
-import * as mutex from "lib0/mutex";
 import * as awarenessProtocol from "y-protocols/awareness";

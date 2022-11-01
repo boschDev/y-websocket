@@ -3,7 +3,6 @@ import * as syncProtocol from 'y-protocols/sync'
 import * as awarenessProtocol from 'y-protocols/awareness'
 import * as encoding from 'lib0/encoding'
 import * as decoding from 'lib0/decoding'
-import * as mutex from 'lib0/mutex'
 import * as map from 'lib0/map'
 import debounce from 'lodash.debounce'
 import { callbackHandler, isCallbackSet } from './callback.js'
@@ -67,7 +66,6 @@ export class WSSharedDoc extends Y.Doc {
   constructor (name) {
     super({ gc: gcEnabled })
     this.name = name
-    this.mux = mutex.createMutex()
     /**
      * Maps from conn to set of controlled user ids. Delete all user ids from awareness when this conn is closed
      * @type {Map<Object, Set<number>>}
@@ -143,6 +141,10 @@ const messageListener = (conn, doc, message) => {
       case messageSync:
         encoding.writeVarUint(encoder, messageSync)
         syncProtocol.readSyncMessage(decoder, encoder, doc, null)
+
+        // If the `encoder` only contains the type of reply message and no
+        // message, there is no need to send the message. When `encoder` only
+        // contains the type of reply, its length is 1.
         if (encoding.length(encoder) > 1) {
           send(doc, conn, encoding.toUint8Array(encoder))
         }

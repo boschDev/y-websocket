@@ -1,3 +1,7 @@
+export const messageSync: 0;
+export const messageQueryAwareness: 3;
+export const messageAwareness: 1;
+export const messageAuth: 2;
 /**
  * Websocket Provider for Yjs. Creates a websocket connection to sync the shared document.
  * The document name is attached to the provided url. I.e. the following example
@@ -25,16 +29,23 @@ export class WebsocketProvider extends Observable<string> {
      * @param {number} [opts.maxBackoffTime] Maximum amount of time to wait before trying to reconnect (we try to reconnect using exponential backoff)
      * @param {boolean} [opts.disableBc] Disable cross-tab BroadcastChannel communication
      */
-    constructor(serverUrl: string, roomname: string, doc: Y.Doc, { connect, awareness, params, WebSocketPolyfill, resyncInterval, maxBackoffTime, disableBc }?: {
-        connect?: boolean;
-        awareness?: awarenessProtocol.Awareness;
+    constructor(serverUrl: string, roomname: string, doc: Y.Doc, opts?: {
+        connect?: boolean | undefined;
+        awareness?: awarenessProtocol.Awareness | undefined;
         params?: {
             [x: string]: string;
-        };
-        WebSocketPolyfill?: typeof WebSocket;
-        resyncInterval?: number;
-        maxBackoffTime?: number;
-        disableBc?: boolean;
+        } | undefined;
+        WebSocketPolyfill?: {
+            new (url: string | URL, protocols?: string | string[] | undefined): WebSocket;
+            prototype: WebSocket;
+            readonly CLOSED: number;
+            readonly CLOSING: number;
+            readonly CONNECTING: number;
+            readonly OPEN: number;
+        } | undefined;
+        resyncInterval?: number | undefined;
+        maxBackoffTime?: number | undefined;
+        disableBc?: boolean | undefined;
     } | undefined);
     maxBackoffTime: number;
     bcChannel: string;
@@ -42,7 +53,7 @@ export class WebsocketProvider extends Observable<string> {
     roomname: string;
     doc: Y.Doc;
     _WS: {
-        new (url: string, protocols?: string | string[] | undefined): WebSocket;
+        new (url: string | URL, protocols?: string | string[] | undefined): WebSocket;
         prototype: WebSocket;
         readonly CLOSED: number;
         readonly CLOSING: number;
@@ -87,10 +98,10 @@ export class WebsocketProvider extends Observable<string> {
     _updateHandler: (update: Uint8Array, origin: any) => void;
     /**
      * @param {any} changed
-     * @param {any} origin
+     * @param {any} _origin
      */
-    _awarenessUpdateHandler: ({ added, updated, removed }: any, origin: any) => void;
-    _beforeUnloadHandler: () => void;
+    _awarenessUpdateHandler: ({ added, updated, removed }: any, _origin: any) => void;
+    _unloadHandler: () => void;
     _checkInterval: any;
     set synced(arg: boolean);
     /**
