@@ -28,10 +28,10 @@
   ],
   "exports": {
     "./package.json": "./package.json",
-    "./bin/utils": "./bin/utils.js",
     "./bin/utils.js": "./bin/utils.js",
-    "./bin/callback": "./bin/callback.js",
+    "./bin/utils": "./bin/utils.js",
     "./bin/callback.js": "./bin/callback.js",
+    "./bin/callback": "./bin/callback.js",
     ".": {
       "import": "./src/y-websocket.js",
       "require": "./dist/y-websocket.cjs"
@@ -40,6 +40,8 @@
   "typesVersions": {
     "*": {
       ".": ["./dist/src/y-websocket.d.ts"],
+      "./*.js": ["./dist/src/*.d.ts"],
+      "bin/*.js": ["./dist/bin/*.d.ts"],
       "./*": ["./dist/src/*.d.ts"],
       "bin/*": ["./dist/bin/*.d.ts"]
     }
