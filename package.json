@@ -33,6 +33,7 @@
     "./bin/callback.js": "./bin/callback.js",
     "./bin/callback": "./bin/callback.js",
     ".": {
+      "module": "./src/y-websocket.js",
       "import": "./src/y-websocket.js",
       "require": "./dist/y-websocket.cjs"
     }
