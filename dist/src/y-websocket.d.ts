@@ -20,7 +20,7 @@ export class WebsocketProvider extends Observable<string> {
      * @param {string} serverUrl
      * @param {string} roomname
      * @param {Y.Doc} doc
-     * @param {object} [opts]
+     * @param {object} opts
      * @param {boolean} [opts.connect]
      * @param {awarenessProtocol.Awareness} [opts.awareness]
      * @param {Object<string,string>} [opts.params]
@@ -46,7 +46,7 @@ export class WebsocketProvider extends Observable<string> {
         resyncInterval?: number | undefined;
         maxBackoffTime?: number | undefined;
         disableBc?: boolean | undefined;
-    } | undefined);
+    });
     maxBackoffTime: number;
     bcChannel: string;
     url: string;
